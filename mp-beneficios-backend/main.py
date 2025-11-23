@@ -253,12 +253,12 @@ def hash_password(password: str) -> str:
 
 app = FastAPI()  # Inicialización de la aplicación FastAPI
 
-# CORS (Permitir que React acceda a la API)
+# , "https://gestorbeneficiosv0-3.onrender.com" (Permitir que React acceda a la API)
 
 app.add_middleware(
     CORSMiddleware,
     # Url del frontend de React
-    allow_origins=["http://127.0.0.1:5000", "http://localhost:5000"],
+    allow_origins=["http://127.0.0.1:5000", "http://localhost:5000", "https://gestorbeneficiosv0-3.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],  # Permitir todos los métodos HTTP
     allow_headers=["*"],  # Permitir todos los encabezados
