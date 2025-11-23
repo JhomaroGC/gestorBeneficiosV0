@@ -8,10 +8,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # API = app.config["BACKEND_URL"]
-API = "https://mp-beneficios-backend.onrender.com"
-
-
-
+API = "https://mp-beneficios-backend.onrender.com";
 
 #---------------------------------- Helpers ----------------------------------#
 def auth_headers():
