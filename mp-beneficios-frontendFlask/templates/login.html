@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .login-container {
+    max-width: 480px;
+    margin: 3rem auto;
+  }
+  
+  .login-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
+  
+  .login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .login-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    color: white;
+  }
+  
+  .login-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  
+  .login-subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+  }
+  
+  .form-control-custom {
+    background: #111118;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .form-control-custom:focus {
+    background: #16161f;
+    border-color: var(--primary);
+    color: var(--text);
+    box-shadow: 0 0 0 4px rgba(38, 59, 247, 0.15);
+  }
+  
+  .btn-login {
+    width: 100%;
+    padding: 0.9rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    background: var(--primary);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(38, 59, 247, 0.3);
+  }
+  
+  .btn-login:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(38, 59, 247, 0.4);
+  }
+  
+  .login-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+  }
+  
+  .login-footer a {
+    color: var(--primary-light);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .login-footer a:hover {
+    color: var(--primary);
+  }
+  
+  .input-group-custom {
+    position: relative;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    z-index: 10;
+  }
+  
+  .input-with-icon {
+    padding-left: 3rem !important;
+  }
+</style>
+
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-icon">
+        <i class="bi bi-person-circle"></i>
+      </div>
+      <h2 class="login-title">Iniciar sesión</h2>
+      <p class="login-subtitle">Accede a tu cuenta de beneficios</p>
+    </div>
+    
+    <form method="post">
+      <div class="mb-3">
+        <label class="form-label">Correo electrónico</label>
+        <div class="input-group-custom">
+          <i class="bi bi-envelope-fill input-icon"></i>
+          <input 
+            type="email" 
+            name="email" 
+            class="form-control form-control-custom input-with-icon" 
+            placeholder="tu@correo.com" 
+            required
+            autocomplete="email"
+          >
+        </div>
+      </div>
+      
+      <div class="mb-4">
+        <label class="form-label">Contraseña</label>
+        <div class="input-group-custom">
+          <i class="bi bi-lock-fill input-icon"></i>
+          <input 
+            type="password" 
+            name="password" 
+            class="form-control form-control-custom input-with-icon" 
+            placeholder="••••••••" 
+            required
+            autocomplete="current-password"
+          >
+        </div>
+      </div>
+      
+      <button type="submit" class="btn btn-login">
+        <i class="bi bi-box-arrow-in-right me-2"></i>
+        Iniciar sesión
+      </button>
+    </form>
+    
+    <div class="login-footer">
+      <p class="mb-0">
+        ¿No tienes cuenta? 
+        <a href="{{ url_for('register') }}">Regístrate aquí</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

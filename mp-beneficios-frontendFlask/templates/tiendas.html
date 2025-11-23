@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .tiendas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background:linear-gradient(135deg, rgba(38, 59, 247, 0.1) 0%, rgba(90, 107, 250, 0.1) 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(38, 59, 247, 0.2);
+  }
+
+  .tiendas-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    color:  var(--text);
+  }
+
+  .search-box {
+    max-width: 300px;
+  }
+
+  .table-custom {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .table-custom thead th {
+    background: rgba(38, 59, 247, 0.1);
+    color: var(--primary-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 1rem;
+    border: none;
+  }
+
+  .table-custom tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary); 
+  }
+
+  .btn-consumir {
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: none;
+    background: var(--success);
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .btn-consumir:hover {
+    background: #17a864;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(31, 191, 117, 0.4);
+  }
+</style>
+
+<div class="tiendas-header">
+  <h2 class="tiendas-title">
+    <i class="bi bi-shop"></i> Solicitudes de Beneficios (Tiendas)
+  </h2>
+  <div class="search-box">
+    <input type="text" id="searchCedula" class="form-control" placeholder="Buscar por cédula...">
+  </div>
+</div>
+
+<div class="card p-3">
+  {% if requests_list and requests_list|length > 0 %}
+    <div class="table-responsive">
+      <table class="table-custom table">
+        <thead>
+          <tr>
+            <th>Cédula</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Tipo de Beneficio</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="requestsTable">
+          {% for req in requests_list %}
+            <tr>
+              <td>{{ req.cedula }}</td>
+              <td>{{ req.nombre }}</td>
+              <td>{{ req.email }}</td>
+              <td>{{ req.benefit_type }}</td>
+              <td>
+                <span class="status-pill {{ req.status.lower() }}">
+                  {{ req.status }}
+                </span>
+              </td>
+              <td>{{ req.created_at}}</td>
+              <!-- <td>{{ req.Fecha if req.Fecha else 'N/A' }}</td> -->
+              <td>
+                {% if req.status == "Solicitado" %}
+                   
+                  <button class="btn-consumir" onclick="consumirSolicitud('{{ req.id }}','{{API}}')">
+                    <i class="bi bi-check-circle-fill me-1"></i> Consumir
+                  </button>
+                {% else %}
+                  <!-- <span class="badge bg-secondary">Ya consumido</span> -->
+                  <span class="badge bg-danger">Consumido</span>
+
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state text-center p-4">
+      <i class="bi bi-inbox fs-1"></i>
+      <p class="mt-2">No hay solicitudes pendientes.</p>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+   //Inactivar botón consumir si la fecha no es del día actual y cambiar de color
+  document.addEventListener('DOMContentLoaded', function() {    
+    const today = new Date().toISOString().split('T')[0]; // Obtener fecha actual en formato YYYY-MM-DD
+    const rows = document.querySelectorAll('#requestsTable tr');
+    rows.forEach(row => {
+      const fechaCell = row.cells[5]; // Columna de fecha
+      const actionCell = row.cells[6]; // Columna de acción
+      if (fechaCell && actionCell) {
+        const fechaText = fechaCell.textContent.trim();
+        if (fechaText.split('T')[0] !== today) {
+          const button = actionCell.querySelector('.btn-consumir');
+          if (button) {
+            button.disabled = true;
+            button.style.background = '#6c757d'; // Cambiar color a gris
+            button.style.cursor = 'not-allowed';
+            button.innerHTML = '<i class="bi bi-x-circle-fill me-1"></i> No válido hoy';
+          }
+        }
+      }
+    });
+  });
+  // Filtro por cédula
+  document.getElementById('searchCedula').addEventListener('keyup', function() {
+
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#requestsTable tr');
+    rows.forEach(row => {
+      const cedula = row.cells[0].textContent.toLowerCase();
+      row.style.display = cedula.includes(filter) ? '' : 'none';
+    });
+  });
+
+  // PUT para consumir solicitud
+  async function consumirSolicitud(requestId, API) {
+    // alert("Consumir solicitud ID: " + `${API}/request/${requestId}`);
+    try {
+        
+      const response = await fetch(`${API}/request/${requestId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer {{ session.get("access_token") }}',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: 'Consumido' })   
+      });
+      if (response.ok) {
+        // alert("Solicitud consumida correctamente.");
+        location.reload();
+      } else {
+        const error = await response.json();
+        
+        // alert("Error: " + error.detail);
+      }
+    } catch (err) {
+      // alert("Error de conexión: " + err);
+    }
+  }
+</script>
+{% endblock %}

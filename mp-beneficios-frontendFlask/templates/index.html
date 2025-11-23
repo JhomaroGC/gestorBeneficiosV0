@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .hero-section {
+    text-align: center;
+    padding: 5rem 0;
+    background: linear-gradient(135deg, rgba(38, 59, 247, 0.1) 0%, rgba(90, 107, 250, 0.05) 100%);
+    border-radius: 24px;
+    margin-bottom: 3rem;
+    border: 1px solid rgba(38, 59, 247, 0.2);
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(90deg, #ffffff 0%, var(--primary-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.3rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .btn-hero {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-hero-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    box-shadow: 0 6px 25px rgba(38, 59, 247, 0.4);
+  }
+  
+  .btn-hero-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(38, 59, 247, 0.5);
+    color: white;
+  }
+  
+  .btn-hero-outline {
+    background: transparent;
+    color: var(--text);
+    border: 2px solid var(--primary);
+  }
+  
+  .btn-hero-outline:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-3px);
+  }
+  
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(38, 59, 247, 0.2);
+    border-color: var(--primary);
+  }
+  
+  .feature-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    color: white;
+  }
+  
+  .feature-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+  
+  .feature-description {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.1rem;
+    }
+  }
+</style>
+
+<div class="hero-section">
+  <h1 class="hero-title">Bienvenido al Gestor de Beneficios</h1>
+  <p class="hero-subtitle">{{ backend_message }}</p>
+  
+  {% if not session.get('access_token') %}
+    <div class="cta-buttons">
+      <a class="btn btn-hero btn-hero-primary" href="{{ url_for('register') }}">
+        <i class="bi bi-person-plus-fill me-2"></i>
+        Crear cuenta
+      </a>
+      <a class="btn btn-hero btn-hero-outline" href="{{ url_for('login') }}">
+        <i class="bi bi-box-arrow-in-right me-2"></i>
+        Iniciar sesión
+      </a>
+    </div>
+  {% else %}
+    <div class="cta-buttons">
+      <a class="btn btn-hero btn-hero-primary" href="{{ url_for('dashboard') }}">
+        <i class="bi bi-speedometer2 me-2"></i>
+        Solicitar Beneficios
+      </a>
+    </div>
+  {% endif %}
+</div>
+
+<!-- Features Section -->
+<div class="row g-4 mt-4">
+  <div class="col-md-4">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="bi bi-lightning-charge-fill"></i>
+      </div>
+      <h3 class="feature-title">Rápido y Sencillo</h3>
+      <p class="feature-description">
+        Solicita tus beneficios en segundos con nuestra interfaz intuitiva y moderna.
+      </p>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="bi bi-shield-check"></i>
+      </div>
+      <h3 class="feature-title">Seguro y Confiable</h3>
+      <p class="feature-description">
+        Tus datos están protegidos con los más altos estándares de seguridad.
+      </p>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="bi bi-clock-history"></i>
+      </div>
+      <h3 class="feature-title">Historial Completo</h3>
+      <p class="feature-description">
+        Accede al historial completo de todas tus solicitudes en cualquier momento.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
