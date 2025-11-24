@@ -260,7 +260,7 @@ app.add_middleware(
     CORSMiddleware,
     # Url del frontend de React
     # allow_origins=["http://127.0.0.1:5000", "http://localhost:5000"],
-    allow_origins = [origins]
+    allow_origins = origins,
     allow_credentials=True,
     allow_methods=["*"],  # Permitir todos los métodos HTTP
     allow_headers=["*"],  # Permitir todos los encabezados
