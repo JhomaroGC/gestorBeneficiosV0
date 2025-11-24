@@ -255,7 +255,7 @@ app = FastAPI()  # Inicialización de la aplicación FastAPI
 
 # , "https://gestorbeneficiosv0-3.onrender.com" (Permitir que React acceda a la API)
 
-origins = ["https://gestorbeneficiosv0-4.onrender.com/tiendas"]
+origins = ["https://gestorbeneficiosv0-4.onrender.com"]
 app.add_middleware(
     CORSMiddleware,
     # Url del frontend de React
